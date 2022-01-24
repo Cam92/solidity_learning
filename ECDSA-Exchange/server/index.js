@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const port = 3042;
+const SHA256 = require('crypto-js/sha256');
 var EC = require('elliptic').ec;
 var ec = new EC('secp256k1');
 
@@ -13,9 +14,9 @@ const publicKey1 = key1.getPublic().encode('hex');
 const publicKey2 = key2.getPublic().encode('hex');
 const publicKey3 = key3.getPublic().encode('hex');
 
-const privateKey1 = key1.getPrivate();
-const privateKey2 = key2.getPrivate();
-const privateKey3 = key3.getPrivate();
+const privateKey1 = key1.getPrivate().toString(16);
+const privateKey2 = key2.getPrivate().toString(16);
+const privateKey3 = key3.getPrivate().toString(16);
 
 // localhost can have cross origin errors
 // depending on the browser you use!
@@ -47,7 +48,7 @@ app.get('/balance/:address', (req, res) => {
 app.post('/send', (req, res) => {
   const {sender, recipient, amount, signature} = req.body;
 
-  var checkHash = [amount];
+  var checkHash = SHA256(sender).toString();
   console.log(signature);
   console.log(ec.keyFromPublic(sender, 'hex').verify(checkHash, signature));
 
