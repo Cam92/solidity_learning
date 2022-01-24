@@ -1,4 +1,6 @@
 import "./index.scss";
+var EC = require('elliptic').ec;
+var ec = new EC('secp256k1');
 
 const server = "http://localhost:3042";
 
@@ -21,8 +23,12 @@ document.getElementById("transfer-amount").addEventListener('click', () => {
   const recipient = document.getElementById("recipient").value;
   const privateKey = document.getElementById("private-key").value;
 
+  //Choosing not to pass the private key along to the server
+  var checkHash = [amount];
+  var signature = ec.keyFromPrivate(privateKey).sign(checkHash).toDER();
+
   const body = JSON.stringify({
-    sender, amount, recipient, privateKey
+    sender, amount, recipient, signature
   });
 
   const request = new Request(`${server}/send`, { method: 'POST', body });
