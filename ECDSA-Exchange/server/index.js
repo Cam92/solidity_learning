@@ -17,23 +17,20 @@ const privateKey1 = key1.getPrivate();
 const privateKey2 = key2.getPrivate();
 const privateKey3 = key3.getPrivate();
 
-
-
-
 // localhost can have cross origin errors
 // depending on the browser you use!
 app.use(cors());
 app.use(express.json());
 
 const balances = {
-  publicKey1: 100,
-  publicKey2: 50,
-  publicKey3: 75,
+  [publicKey1]: 100,
+  [publicKey2]: 50,
+  [publicKey3]: 75,
 }
 
-console.log('Addess 1 pbK: ' + publicKey1 + ' (' + balances.publicKey1 + ' ETH)');
-console.log('Addess 2 pbK: ' + publicKey2 + ' (' + balances.publicKey2 + ' ETH)');
-console.log('Addess 3 pbK: ' + publicKey3 + ' (' + balances.publicKey3 + ' ETH)');
+console.log('Addess 1 pbK: ' + publicKey1 + ' (' + balances[publicKey1] + ' ETH)');
+console.log('Addess 2 pbK: ' + publicKey2 + ' (' + balances[publicKey2] + ' ETH)');
+console.log('Addess 3 pbK: ' + publicKey3 + ' (' + balances[publicKey3] + ' ETH)');
 
 console.log('');
 
@@ -48,11 +45,9 @@ app.get('/balance/:address', (req, res) => {
 });
 
 app.post('/send', (req, res) => {
-  const {sender, recipient, amount, privateKey} = req.body;
+  const {sender, recipient, amount, signature} = req.body;
 
   var checkHash = [amount];
-
-  var signature = ec.keyFromPrivate(privateKey).sign(checkHash).toDER();
   console.log(signature);
   console.log(ec.keyFromPublic(sender, 'hex').verify(checkHash, signature));
 
