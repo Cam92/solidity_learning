@@ -1,4 +1,5 @@
 import "./index.scss";
+const SHA256 = require('crypto-js/sha256');
 var EC = require('elliptic').ec;
 var ec = new EC('secp256k1');
 
@@ -24,8 +25,8 @@ document.getElementById("transfer-amount").addEventListener('click', () => {
   const privateKey = document.getElementById("private-key").value;
 
   //Choosing not to pass the private key along to the server
-  var checkHash = [amount];
-  var signature = ec.keyFromPrivate(privateKey).sign(checkHash).toDER();
+  var checkHash = SHA256(sender).toString();
+  var signature = ec.keyFromPrivate(privateKey, 'hex').sign(checkHash);
 
   const body = JSON.stringify({
     sender, amount, recipient, signature
