@@ -1,0 +1,1 @@
+Current contract deployment of CamCoin: 0xd6C8507Edf31EC5fEf799899d9D42Ac7835e5487
