@@ -17,13 +17,13 @@ contract Game4 {
     }
   }
 
-  function win(uint guess) payable public {
+  function win(uint guess) public {
     uint secret;
     bytes32 slot = SECRET_SLOT;
     assembly {
       secret := sload(slot)
     }
-    require(guess == secret);
+    require(guess == secret, "Incorrect guess!");
     emit Winner(msg.sender);
   }
 }

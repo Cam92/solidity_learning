@@ -8,7 +8,7 @@ contract Game2 {
 
   function win(uint8 x) public {
     uint8 sum = x + y;
-    require(sum == 10);
+    require(sum == 10, "Incorrect argument passed in!");
     emit Winner(msg.sender);
   }
 }
